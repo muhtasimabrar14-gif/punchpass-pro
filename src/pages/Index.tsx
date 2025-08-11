@@ -1,13 +1,19 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Hero from "@/components/marketing/Hero";
+import FeatureGrid from "@/components/marketing/FeatureGrid";
+import PricingSection from "@/components/marketing/PricingSection";
+import WidgetPreview from "@/components/marketing/WidgetPreview";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main>
+      <Hero />
+      <FeatureGrid />
+      <WidgetPreview />
+      <PricingSection />
+      <footer className="container py-10 text-sm text-muted-foreground">
+        <p>© {new Date().getFullYear()} PunchPass Pro. Built for independent trainers and growing studios.</p>
+      </footer>
+    </main>
   );
 };
 
