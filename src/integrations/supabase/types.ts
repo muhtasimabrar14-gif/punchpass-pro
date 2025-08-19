@@ -14,12 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          organization_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          organization_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          organization_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_events_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           class_id: string
           created_at: string
           id: string
           pass_type: string
+          qr_code: string | null
           status: Database["public"]["Enums"]["booking_status"]
           updated_at: string
           user_email: string
@@ -31,6 +67,7 @@ export type Database = {
           created_at?: string
           id?: string
           pass_type: string
+          qr_code?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           updated_at?: string
           user_email: string
@@ -42,6 +79,7 @@ export type Database = {
           created_at?: string
           id?: string
           pass_type?: string
+          qr_code?: string | null
           status?: Database["public"]["Enums"]["booking_status"]
           updated_at?: string
           user_email?: string
@@ -54,6 +92,38 @@ export type Database = {
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      check_ins: {
+        Row: {
+          booking_id: string
+          checked_in_at: string
+          checked_in_by: string | null
+          id: string
+          qr_code: string | null
+        }
+        Insert: {
+          booking_id: string
+          checked_in_at?: string
+          checked_in_by?: string | null
+          id?: string
+          qr_code?: string | null
+        }
+        Update: {
+          booking_id?: string
+          checked_in_at?: string
+          checked_in_by?: string | null
+          id?: string
+          qr_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "check_ins_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
         ]
@@ -111,6 +181,59 @@ export type Database = {
           },
         ]
       }
+      memberships: {
+        Row: {
+          class_credits: number | null
+          created_at: string
+          currency: string
+          description: string | null
+          duration_days: number | null
+          id: string
+          is_recurring: boolean
+          name: string
+          organization_id: string
+          price: number
+          type: Database["public"]["Enums"]["membership_type"]
+          updated_at: string
+        }
+        Insert: {
+          class_credits?: number | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_days?: number | null
+          id?: string
+          is_recurring?: boolean
+          name: string
+          organization_id: string
+          price?: number
+          type?: Database["public"]["Enums"]["membership_type"]
+          updated_at?: string
+        }
+        Update: {
+          class_credits?: number | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          duration_days?: number | null
+          id?: string
+          is_recurring?: boolean
+          name?: string
+          organization_id?: string
+          price?: number
+          type?: Database["public"]["Enums"]["membership_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memberships_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       org_members: {
         Row: {
           created_at: string
@@ -146,6 +269,62 @@ export type Database = {
           },
         ]
       }
+      organization_settings: {
+        Row: {
+          allow_waitlist: boolean
+          auto_confirm_bookings: boolean
+          cancellation_hours: number
+          created_at: string
+          google_calendar_connected: boolean
+          id: string
+          organization_id: string
+          outlook_calendar_connected: boolean
+          require_payment: boolean
+          settings: Json
+          stripe_account_id: string | null
+          stripe_connected: boolean
+          updated_at: string
+        }
+        Insert: {
+          allow_waitlist?: boolean
+          auto_confirm_bookings?: boolean
+          cancellation_hours?: number
+          created_at?: string
+          google_calendar_connected?: boolean
+          id?: string
+          organization_id: string
+          outlook_calendar_connected?: boolean
+          require_payment?: boolean
+          settings?: Json
+          stripe_account_id?: string | null
+          stripe_connected?: boolean
+          updated_at?: string
+        }
+        Update: {
+          allow_waitlist?: boolean
+          auto_confirm_bookings?: boolean
+          cancellation_hours?: number
+          created_at?: string
+          google_calendar_connected?: boolean
+          id?: string
+          organization_id?: string
+          outlook_calendar_connected?: boolean
+          require_payment?: boolean
+          settings?: Json
+          stripe_account_id?: string | null
+          stripe_connected?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_settings_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: true
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       organizations: {
         Row: {
           created_at: string
@@ -173,6 +352,59 @@ export type Database = {
         }
         Relationships: []
       }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          organization_id: string
+          payment_type: string
+          related_id: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          stripe_customer_id: string | null
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          organization_id: string
+          payment_type: string
+          related_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          organization_id?: string
+          payment_type?: string
+          related_id?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          stripe_customer_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -197,6 +429,98 @@ export type Database = {
         }
         Relationships: []
       }
+      user_passes: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          membership_id: string
+          organization_id: string
+          remaining_credits: number | null
+          status: Database["public"]["Enums"]["pass_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          membership_id: string
+          organization_id: string
+          remaining_credits?: number | null
+          status?: Database["public"]["Enums"]["pass_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          membership_id?: string
+          organization_id?: string
+          remaining_credits?: number | null
+          status?: Database["public"]["Enums"]["pass_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_passes_membership_id_fkey"
+            columns: ["membership_id"]
+            isOneToOne: false
+            referencedRelation: "memberships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_passes_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      waitlist: {
+        Row: {
+          class_id: string
+          created_at: string
+          id: string
+          position: number
+          updated_at: string
+          user_email: string
+          user_name: string
+          user_phone: string | null
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          id?: string
+          position: number
+          updated_at?: string
+          user_email: string
+          user_name: string
+          user_phone?: string | null
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          id?: string
+          position?: number
+          updated_at?: string
+          user_email?: string
+          user_name?: string
+          user_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -209,7 +533,10 @@ export type Database = {
     }
     Enums: {
       booking_status: "confirmed" | "cancelled" | "waitlist"
+      membership_type: "unlimited" | "class_pack" | "trial"
       org_role: "owner" | "admin" | "member"
+      pass_status: "active" | "expired" | "suspended"
+      payment_status: "pending" | "completed" | "failed" | "refunded"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -338,7 +665,10 @@ export const Constants = {
   public: {
     Enums: {
       booking_status: ["confirmed", "cancelled", "waitlist"],
+      membership_type: ["unlimited", "class_pack", "trial"],
       org_role: ["owner", "admin", "member"],
+      pass_status: ["active", "expired", "suspended"],
+      payment_status: ["pending", "completed", "failed", "refunded"],
     },
   },
 } as const
