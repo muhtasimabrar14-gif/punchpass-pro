@@ -13,6 +13,11 @@ import Classes from "./pages/Classes";
 import Members from "./pages/Members";
 import Settings from "./pages/Settings";
 import WidgetEmbed from "./pages/WidgetEmbed";
+import Analytics from "./pages/Analytics";
+import Memberships from "./pages/Memberships";
+import QRScanner from "./pages/QRScanner";
+import Import from "./pages/Import";
+import Onboarding from "./pages/Onboarding";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +34,11 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/onboarding" element={
+                <ProtectedRoute>
+                  <Onboarding />
+                </ProtectedRoute>
+              } />
               <Route path="/dashboard" element={
                 <ProtectedRoute>
                   <Dashboard />
@@ -42,6 +52,26 @@ const App = () => (
               <Route path="/members" element={
                 <ProtectedRoute>
                   <Members />
+                </ProtectedRoute>
+              } />
+              <Route path="/memberships" element={
+                <ProtectedRoute>
+                  <Memberships />
+                </ProtectedRoute>
+              } />
+              <Route path="/analytics" element={
+                <ProtectedRoute>
+                  <Analytics />
+                </ProtectedRoute>
+              } />
+              <Route path="/qr-scanner" element={
+                <ProtectedRoute>
+                  <QRScanner />
+                </ProtectedRoute>
+              } />
+              <Route path="/import" element={
+                <ProtectedRoute>
+                  <Import />
                 </ProtectedRoute>
               } />
               <Route path="/settings" element={

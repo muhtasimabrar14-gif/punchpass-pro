@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Dumbbell, Calendar, Users, Settings, LogOut } from 'lucide-react';
+import { Dumbbell, Calendar, Users, Settings, LogOut, CreditCard, TrendingUp, QrCode, Upload } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,33 +27,18 @@ const Header = () => {
 
         {user ? (
           <div className="flex items-center space-x-4">
-            <nav className="hidden md:flex items-center space-x-1">
-              <Button
-                variant={isActive('/dashboard') ? 'secondary' : 'ghost'}
-                asChild
-              >
-                <Link to="/dashboard">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Dashboard
-                </Link>
+            <nav className="hidden lg:flex items-center space-x-1">
+              <Button variant={isActive('/dashboard') ? 'secondary' : 'ghost'} asChild>
+                <Link to="/dashboard">Dashboard</Link>
               </Button>
-              <Button
-                variant={isActive('/classes') ? 'secondary' : 'ghost'}
-                asChild
-              >
-                <Link to="/classes">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Classes
-                </Link>
+              <Button variant={isActive('/classes') ? 'secondary' : 'ghost'} asChild>
+                <Link to="/classes">Classes</Link>
               </Button>
-              <Button
-                variant={isActive('/members') ? 'secondary' : 'ghost'}
-                asChild
-              >
-                <Link to="/members">
-                  <Users className="h-4 w-4 mr-2" />
-                  Members
-                </Link>
+              <Button variant={isActive('/members') ? 'secondary' : 'ghost'} asChild>
+                <Link to="/members">Members</Link>
+              </Button>
+              <Button variant={isActive('/memberships') ? 'secondary' : 'ghost'} asChild>
+                <Link to="/memberships">Memberships</Link>
               </Button>
             </nav>
 
@@ -79,6 +64,24 @@ const Header = () => {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/analytics">
+                    <TrendingUp className="mr-2 h-4 w-4" />
+                    Analytics
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/qr-scanner">
+                    <QrCode className="mr-2 h-4 w-4" />
+                    QR Scanner
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/import">
+                    <Upload className="mr-2 h-4 w-4" />
+                    Import Data
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/settings">
                     <Settings className="mr-2 h-4 w-4" />
