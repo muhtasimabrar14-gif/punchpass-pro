@@ -9,6 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { Copy, ExternalLink, Settings as SettingsIcon } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile, useOrganizations } from "@/hooks/useProfile";
+import CalendarIntegrations from "@/components/calendar/CalendarIntegrations";
+import TeamManagement from "@/components/business/TeamManagement";
+import { useCurrentUserRole } from "@/hooks/useTeamManagement";
 import { toast } from "@/hooks/use-toast";
 
 const Settings = () => {
@@ -16,6 +19,7 @@ const Settings = () => {
   const { user } = useAuth();
   const { data: profile } = useProfile();
   const { data: organizations = [] } = useOrganizations();
+  const { data: currentUserRole } = useCurrentUserRole(selectedOrg);
 
   const selectedOrgData = organizations.find(org => org.id === selectedOrg);
 
@@ -141,6 +145,33 @@ const Settings = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Calendar Integrations */}
+      {selectedOrg && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Calendar Integrations</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CalendarIntegrations organizationId={selectedOrg} />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Team Management */}
+      {selectedOrg && currentUserRole && (currentUserRole === 'owner' || currentUserRole === 'admin') && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Team Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <TeamManagement 
+              organizationId={selectedOrg} 
+              currentUserRole={currentUserRole}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {/* Widget Embed Settings */}
       <Card>

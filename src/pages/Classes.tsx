@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Calendar, Users, DollarSign, Clock } from "lucide-react";
 import { useOrganizations } from "@/hooks/useProfile";
 import { useClasses, useCreateClass, Class } from "@/hooks/useClasses";
+import { useCalendarEvents } from "@/hooks/useCalendarIntegrations";
+import ClassScheduler from "@/components/calendar/ClassScheduler";
 import { toast } from "@/hooks/use-toast";
 
 const Classes = () => {
@@ -26,6 +28,7 @@ const Classes = () => {
 
   const { data: organizations = [] } = useOrganizations();
   const { data: classes = [] } = useClasses(selectedOrg);
+  const { data: calendarEvents = [] } = useCalendarEvents(selectedOrg);
   const createClass = useCreateClass();
 
   const handleCreateClass = async () => {
@@ -275,6 +278,22 @@ const Classes = () => {
           <p className="text-muted-foreground">
             Choose an organization to view and manage its classes.
           </p>
+        </div>
+      )}
+
+      {/* Class Scheduler */}
+      {selectedOrg && (
+        <div className="space-y-6">
+          <div className="border-t pt-8">
+            <h2 className="text-2xl font-bold mb-6">Smart Class Scheduler</h2>
+            <ClassScheduler 
+              organizationId={selectedOrg} 
+              onClassCreated={() => {
+                // Refresh classes list
+                window.location.reload();
+              }}
+            />
+          </div>
         </div>
       )}
     </main>
