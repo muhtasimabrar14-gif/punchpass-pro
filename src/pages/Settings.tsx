@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useProfile, useOrganizations } from "@/hooks/useProfile";
 import CalendarIntegrations from "@/components/calendar/CalendarIntegrations";
 import TeamManagement from "@/components/business/TeamManagement";
+import NoShowManagement from "@/components/business/NoShowManagement";
 import { useCurrentUserRole } from "@/hooks/useTeamManagement";
 import { toast } from "@/hooks/use-toast";
 
@@ -169,6 +170,18 @@ const Settings = () => {
               organizationId={selectedOrg} 
               currentUserRole={currentUserRole}
             />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* No-Show Management */}
+      {selectedOrg && currentUserRole && (currentUserRole === 'owner' || currentUserRole === 'admin') && (
+        <Card>
+          <CardHeader>
+            <CardTitle>No-Show Management</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <NoShowManagement organizationId={selectedOrg} />
           </CardContent>
         </Card>
       )}
